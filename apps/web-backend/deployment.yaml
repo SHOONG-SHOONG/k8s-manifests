@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-backend
+  namespace: web-backend
+  labels:
+    app: web-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-backend
+  template:
+    metadata:
+      labels:
+        app: web-backend
+    spec:
+      containers:
+      - name: web-backend
+        image: harbor.shoong.store/shoong-backend/develop:latest
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: IfNotPresent
+        env:
+          # === DB ===
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: web-backend-secret
+                key: db_host
+          - name: DB_PORT
+            value: 3306
+          - name: DB_NAME
+            value: shoong
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: web-backend-secret
+                key: db_username
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: web-backend-secret
+                key: db_password
+
+          # === JWT ===
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: web-backend-secret
+                key: jwt_secret
+
+          # === REDIS ===
+          - name: REDIS_HOST
+            valueFrom:
+              secretKeyRef:
+                name: web-backend-secret
+                key: redis_host
+            value: redis.ns-db.svc.cluster.local
+          - name: REDIS_PORT
+            value: "6379"
+
+          # === Kakao OAuth ===
+          - name: REST_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: web-backend-secret
+                key: kakao_client_id
+
+          # === AWS ===
+          - name: AWS_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: web-backend-secret
+                key: aws_access_key
+          - name: AWS_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: web-backend-secret
+                key: aws_secret_key
+          - name: AWS_REGION
+            value: ap-northeast-2
+          - name: S3_BUCKET_NAME
+            valueFrom:
+              secretKeyRef:
+                name: web-backend-secret
+                key: s3_bucket_name
+
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
