@@ -56,7 +56,6 @@ spec:
               secretKeyRef:
                 name: web-backend-secret
                 key: redis_host
-            value: redis.ns-db.svc.cluster.local
           - name: REDIS_PORT
             value: "6379"
 
