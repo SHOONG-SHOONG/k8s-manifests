@@ -29,9 +29,9 @@ spec:
                 name: web-backend-secret
                 key: db_host
           - name: DB_PORT
-            value: 3306
+            value: "3306"
           - name: DB_NAME
-            value: shoong
+            value: "shoong"
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
@@ -78,7 +78,7 @@ spec:
                 name: web-backend-secret
                 key: aws_secret_key
           - name: AWS_REGION
-            value: ap-northeast-2
+            value: "ap-northeast-2"
           - name: S3_BUCKET_NAME
             valueFrom:
               secretKeyRef:
