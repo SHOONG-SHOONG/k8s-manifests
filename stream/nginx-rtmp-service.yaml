@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-rtmp
+  namespace: nginx-rtmp
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 1935
+    targetPort: 1935
+    protocol: TCP
+    name: rtmp  # 포트 이름 추가 (명확성을 위해)
+  - port: 8088  # HTTP 포트 추가
+    targetPort: 8088
+    protocol: TCP
+    name: http  # 포트 이름 추가
+  selector:
+    app: nginx-rtmp

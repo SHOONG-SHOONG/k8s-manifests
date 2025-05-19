@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-rtmp
+  namespace: nginx-rtmp
+  labels:
+    app: nginx-rtmp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-rtmp
+  template:
+    metadata:
+      labels:
+        app: nginx-rtmp
+    spec:
+      containers:
+      - name: nginx-rtmp
+        image: woody6624/nginx-rtmp:latest
+        ports:
+        - containerPort: 1935
+          protocol: TCP
+        - containerPort: 8088  # HTTP 포트 추가
+          protocol: TCP
