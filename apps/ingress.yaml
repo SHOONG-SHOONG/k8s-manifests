@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: chat-backend-ingress
-  namespace: chat-backend
+  name: shoong-ingress
+  namespace: backend
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
@@ -15,13 +15,27 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: chat.shoong.store
+    - host: shoong.store
       http:
         paths:
-          - path: /
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: web-backend
+                port:
+                  number: 80
+          - path: /chat
             pathType: Prefix
             backend:
               service:
                 name: chat-backend
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-frontend
                 port:
                   number: 80
