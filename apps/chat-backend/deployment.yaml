@@ -30,7 +30,7 @@ spec:
               secretKeyRef:
                 name: chat-backend-secret
                 key: mongodb_host
-          - name: DB_PORT
+          - name: MONGO_DB_PORT
             value: "27017"
-          - name: DB_NAME
+          - name: MONGO_DB_NAME
             value: "chatDB"
