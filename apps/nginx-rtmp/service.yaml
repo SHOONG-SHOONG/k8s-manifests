@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-rtmp
+  namespace: streaming
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-northeast-2:256881178873:certificate/6b9748a9-a9e8-4a5b-9912-d66db2fcf27f
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 443
+      targetPort: 8088
+      protocol: TCP
+      name: https  # 명확한 명칭
+    - port: 1935
+      targetPort: 1935
+      protocol: TCP
+      name: rtmp
+  selector:
+    app: nginx-rtmp
