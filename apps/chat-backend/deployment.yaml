@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: websocket
-        image: harbor.shoong.store/chat-backend/websocket-server:develop-12
+        image: harbor.shoong.store/chat-backend/develop:12
         ports:
         - containerPort: 8080
         imagePullPolicy: IfNotPresent
