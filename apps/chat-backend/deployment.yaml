@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: websocket-server
+  name: chat-server
   labels:
-    app: websocket-server
+    app: chat-server
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: websocket-server
+      app: chat-server
   template:
     metadata:
       labels:
-        app: websocket-server
+        app: chat-server
     spec:
       containers:
-      - name: websocket
+      - name: chat
         image: harbor.shoong.store/chat-backend/develop:13
         ports:
         - containerPort: 8080
