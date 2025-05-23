@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chat-server
+  name: chat-backend
   labels:
-    app: chat-server
+    app: chat-backend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: chat-server
+      app: chat-backend
   template:
     metadata:
       labels:
-        app: chat-server
+        app: chat-backend
     spec:
       containers:
       - name: chat
