@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: harbor.shoong.store/shoong-frontend/develop:20
+        image: harbor.shoong.store/shoong-frontend/develop:21
         ports:
         - containerPort: 3000
