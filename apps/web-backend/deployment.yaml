@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web-backend
-  namespace: web-backend
+  namespace: backend
   labels:
     app: web-backend
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: web-backend
-        image: harbor.shoong.store/shoong-backend/develop:24
+        image: harbor.shoong.store/shoong-backend/develop:26
         ports:
         - containerPort: 8080
         imagePullPolicy: IfNotPresent
