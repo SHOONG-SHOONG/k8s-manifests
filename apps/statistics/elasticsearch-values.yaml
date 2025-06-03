@@ -1,0 +1,44 @@
+image:
+  tag: 8.13.4
+
+replicas: 1
+minimumMasterNodes: 1
+
+security:
+  enabled: false
+
+sysctlImage:
+  enabled: true
+
+volumeClaimTemplate:
+  resources:
+    requests:
+      storage: 10Gi
+
+global:
+  storageClass: ebs-sc
+
+volumePermissions:
+  enabled: true  # 권한 문제 해결
+
+master:
+  masterOnly: false     # 마스터가 모든 역할을 하도록 설정
+  replicaCount: 1       # 마스터 노드 수: 1개
+  nodeSelector:
+    workload: streaming-infra
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 1
+      memory: 512Mi
+
+data:
+  replicaCount: 0       # 데이터 노드 사용 안 함
+coordinating:
+  replicaCount: 0       # coordinating 노드 사용 안 함
+ingest:
+  replicaCount: 0       # ingest 노드 사용 안 함
+
+clusterHealthCheckParams: "wait_for_status=green&timeout=1s"

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluent-bit-config
+  namespace: backend
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+        Flush        5
+        Log_Level    info
+
+    [INPUT]
+        Name         tail
+        Path         /app/logs/application.log
+        Tag          web-backend.log
+        DB           /var/log/flb_web_backend.db
+        Mem_Buf_Limit 5MB
+        Skip_Long_Lines On
+
+    [OUTPUT]
+        Name  es
+        Match *
+        Host  es-elasticsearch.statistics.svc.cluster.local
+        Port  9200
+        Index web-backend-logs
