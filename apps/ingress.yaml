@@ -19,7 +19,7 @@ spec:
     - host: api.shoong.store
       http:
         paths:
-          - path: /chat/
+          - path: /chat
             pathType: Prefix
             backend:
               service:
