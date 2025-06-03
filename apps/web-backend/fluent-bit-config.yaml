@@ -23,3 +23,4 @@ data:
         Host  es-elasticsearch.statistics.svc.cluster.local
         Port  9200
         Index web-backend-logs
+        Suppress_Type_Name On
