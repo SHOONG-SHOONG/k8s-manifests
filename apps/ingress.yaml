@@ -11,12 +11,21 @@ metadata:
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=60
     alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-2016-08
     alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+
 spec:
   ingressClassName: alb
   rules:
     - host: api.shoong.store
       http:
         paths:
+          - path: /chat/
+            pathType: Prefix
+            backend:
+              service:
+                name: chat-backend
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
@@ -24,10 +33,4 @@ spec:
                 name: web-backend
                 port:
                   number: 80
-          - path: /chat
-            pathType: Prefix
-            backend:
-              service:
-                name: chat-backend
-                port:
-                  number: 80
+          
