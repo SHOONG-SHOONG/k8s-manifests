@@ -37,7 +37,7 @@ spec:
                       - was
       containers:
       - name: web-backend
-        image: harbor.shoong.store/shoong-backend/develop:77
+        image: harbor.shoong.store/shoong-backend/develop:78
         ports:
         - containerPort: 8080
         imagePullPolicy: IfNotPresent
