@@ -29,10 +29,18 @@ master:
   resources:
     requests:
       cpu: 500m
-      memory: 512Mi
+      memory: 2Gi
     limits:
       cpu: 1
-      memory: 512Mi
+      memory: 2Gi
+      
+  podTemplate: # Pod 템플릿을 정의하는 섹션 (차트별로 다를 수 있음)
+    spec:
+      containers:
+        - name: elasticsearch # 컨테이너 이름 (차트에서 사용하는 이름 확인 필요)
+          env:
+            - name: ES_JAVA_OPTS
+              value: "-Xms1g -Xmx1g" # 최소 1GB 힙 메모리 설정
 
 data:
   replicaCount: 0       # 데이터 노드 사용 안 함
