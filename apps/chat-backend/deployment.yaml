@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: chat
-        image: harbor.shoong.store/chat-backend/develop:39
+        image: harbor.shoong.store/chat-backend/develop:41
         ports:
         - containerPort: 8080
         imagePullPolicy: IfNotPresent
