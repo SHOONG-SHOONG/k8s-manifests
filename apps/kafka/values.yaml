@@ -1,0 +1,96 @@
+# KRaft 모드 활성화 (ZooKeeper 비활성화)
+kraft:
+  enabled: true
+  clusterId: "LWIxNGQwYzVkNmVlZWJjOWI" # 고유한 클러스터 ID (base64로 인코딩된 값)
+# ZooKeeper 비활성화
+zookeeper:
+  enabled: false
+# 3개 브로커 구성
+replicaCount: 3
+# 내부 통신용 서비스
+service:
+  type: ClusterIP
+# 명시적인 리스너 설정
+listeners:
+  client:
+    name: PLAINTEXT
+    containerPort: 9092
+    protocol: PLAINTEXT
+    sslClientAuth: ""
+  interbroker:
+    name: INTERNAL
+    containerPort: 9094
+    protocol: PLAINTEXT
+    sslClientAuth: ""
+  controller:
+    name: CONTROLLER
+    containerPort: 9093
+    protocol: PLAINTEXT
+    sslClientAuth: ""
+# 환경 변수 설정
+extraEnvVars:
+  - name: POD_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.name
+  - name: KAFKA_CFG_PROCESS_ROLES
+    value: "broker,controller"
+  - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
+    value: "0@kafka-0.kafka-headless.kafka.svc.cluster.local:9093,1@kafka-1.kafka-headless.kafka.svc.cluster.local:9093,2@kafka-2.kafka-headless.kafka.svc.cluster.local:9093"
+  - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
+    value: "CONTROLLER"
+  - name: KAFKA_CFG_INTER_BROKER_LISTENER_NAME
+    value: "INTERNAL"
+  - name: KAFKA_CFG_SASL_ENABLED_MECHANISMS
+    value: ""
+  - name: KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL
+    value: ""
+# 파드 분산 배치
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - kafka
+          topologyKey: kubernetes.io/hostname
+podLabels: {}
+podAnnotations: {}
+# 최상위 레벨 persistence 설정
+persistence:
+  enabled: true
+  storageClass: "ebs-sc"
+  accessModes:
+    - ReadWriteOnce
+  size: 12Gi
+# 컨트롤러 노드 설정
+controller:
+  persistence:
+    enabled: true
+    storageClass: "ebs-sc"
+    accessModes:
+      - ReadWriteOnce
+    size: 12Gi
+  overrideConfiguration:
+    delete.topic.enable: "true"
+# 브로커 노드 설정
+broker:
+  persistence:
+    enabled: true
+    storageClass: "ebs-sc"
+    accessModes:
+      - ReadWriteOnce
+    size: 12Gi
+  overrideConfiguration:
+    delete.topic.enable: "true"
+# 전역 스토리지 클래스 설정
+global:
+  defaultStorageClass: "ebs-sc"
+
+resources:
+  requests:
+    cpu: 300m

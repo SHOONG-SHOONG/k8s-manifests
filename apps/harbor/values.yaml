@@ -1,0 +1,107 @@
+expose:
+  type: ingress
+  service:
+    type: ClusterIP
+    tls:
+      enabled: true
+      certSource: secret
+      secret:
+        secretName: "" # 비워두면 annotations의 certificate-arn 사용
+  ingress:
+    hosts:
+      core: harbor.shoong.store  
+    controller: alb
+    annotations:
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+      alb.ingress.kubernetes.io/ssl-redirect: '443'
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:256881178873:certificate/6b9748a9-a9e8-4a5b-9912-d66db2fcf27f
+
+externalURL: https://harbor.shoong.store  
+
+harborAdminPassword: "Harbor12345"  
+
+nodeSelector:
+  workload: streaming-infra
+
+portal:
+  service:
+    type: ClusterIP
+
+core:
+  service:
+    type: ClusterIP
+
+registry:
+  service:
+    type: ClusterIP
+  persistence:
+    enabled: true
+    storageClass: ebs-sc-delayed
+    resource:
+      requests:
+        storage: 30Gi
+
+chartmuseum:
+  enabled: true
+  service:
+    type: ClusterIP
+  persistence:
+    enabled: true
+    storageClass: ebs-sc-delayed
+    resource:
+      requests:
+        storage: 10Gi
+
+jobservice:
+  service:
+    type: ClusterIP
+  persistence:
+    enabled: true
+    storageClass: ebs-sc-delayed
+    resource:
+      requests:
+        storage: 5Gi
+
+database:
+  service:
+    type: ClusterIP
+  internal:
+    password: Harbor12345
+  persistence:
+    enabled: true
+    storageClass: ebs-sc-delayed
+    resource:
+      requests:
+        storage: 20Gi
+
+redis:
+  service:
+    type: ClusterIP
+  persistence:
+    enabled: true
+    storageClass: ebs-sc-delayed
+    resource:
+      requests:
+        storage: 5Gi
+
+trivy:
+  service:
+    type: ClusterIP
+  persistence:
+    enabled: true
+    storageClass: ebs-sc-delayed
+    resource:
+      requests:
+        storage: 10Gi
+
+# 리소스 제한 설정
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 1Gi
+    cpu: 500m
