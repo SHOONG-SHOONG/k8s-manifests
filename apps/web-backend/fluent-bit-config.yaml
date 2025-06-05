@@ -14,7 +14,6 @@ data:
         Parser            spring_json_log 
         Tag               app.logs
         Read_from_Head    true
-        DB                /fluent-bit/logs/flb.db 
         Mem_Buf_Limit     5MB
         Skip_Long_Lines   On
 
