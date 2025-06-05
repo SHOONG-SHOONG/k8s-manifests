@@ -6,21 +6,38 @@ metadata:
 data:
   fluent-bit.conf: |
     [SERVICE]
-        Flush        5
-        Log_Level    info
+        Parsers_File parsers.conf
 
     [INPUT]
-        Name         tail
-        Path         /app/logs/application.log
-        Tag          web-backend.log
-        DB           /var/log/flb_web_backend.db
-        Mem_Buf_Limit 5MB
-        Skip_Long_Lines On
+        Name              tail
+        Path              /app/logs/*.log 
+        Parser            spring_json_log 
+        Tag               app.logs
+        Read_from_Head    true
+        DB                /fluent-bit/logs/flb.db 
+        Mem_Buf_Limit     5MB
+        Skip_Long_Lines   On
 
     [OUTPUT]
         Name  es
-        Match *
-        Host  es-elasticsearch.statistics.svc.cluster.local
+        Match app.logs
+        Host  es-elasticsearch.statistics.svc.cluster.local 
         Port  9200
-        Index web-backend-logs
+        Index fluent-bit 
         Suppress_Type_Name On
+        Replace_Dots    On
+        Time_Key        @timestamp
+        Time_Key_Format %Y-%m-%dT%H:%M:%S.%LZ
+        Retry_Limit     False 
+
+    [OUTPUT]
+        Name stdout
+        Match app.logs
+
+  parsers.conf: |
+    [PARSER]
+        Name        spring_json_log
+        Format      json
+        Time_Key    @timestamp
+        Time_Format %Y-%m-%dT%H:%M:%S.%L%z 
+        Time_Keep   On
