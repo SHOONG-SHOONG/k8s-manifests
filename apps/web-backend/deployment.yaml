@@ -42,6 +42,11 @@ spec:
         - containerPort: 8080
         imagePullPolicy: IfNotPresent
         env:
+          - name: TZ
+            value: Asia/Seoul
+          - name: JAVA_TOOL_OPTIONS
+            value: -Duser.timezone=Asia/Seoul
+
           # === DB ===
           - name: DB_HOST
             valueFrom:
