@@ -1,0 +1,36 @@
+replicaCount: 1
+
+persistence:
+  enabled: true
+  storageClassName: ebs-sc-delayed
+  size: 10Gi
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+ingress:
+  enabled: false  # ingress.yaml로 따로 관리하므로 false
+
+grafana.ini:
+  server:
+    root_url: /
+    serve_from_sub_path: false
+  security:
+    allow_embedding: true
+  auth.anonymous:
+    enabled: true
+    org_role: Viewer
+  unified_alerting:
+    enabled: true
+
+# # Optional: alert rule provisioning
+# extraVolumeMounts:
+#   - name: alerting-rules
+#     mountPath: /etc/grafana/provisioning/alerting
+
+# extraVolumes:
+#   - name: alerting-rules
+#     configMap:
+#       name: grafana-alerting-config

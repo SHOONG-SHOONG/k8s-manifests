@@ -1,0 +1,678 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: 5m
+      folder: Alert_CloudFront
+      interval: 5m
+      rules:
+        - uid: beo0fdpgcdgcgb
+          title: Cloud Front Requests
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 604800
+                to: 0
+              datasourceUid: eenxcshldhjwgd
+              model:
+                alias: ""
+                application:
+                    filter: ""
+                datasource:
+                    type: cloudwatch
+                    uid: eenxcshldhjwgd
+                dimensions:
+                    DistributionId:
+                        - E3EDXD0GKN5M2H
+                    Region:
+                        - Global
+                expression: ""
+                functions: []
+                group:
+                    filter: ""
+                host:
+                    filter: ""
+                id: ""
+                instant: false
+                intervalMs: 1000
+                item:
+                    filter: ""
+                label: ""
+                logGroups: []
+                matchExact: true
+                maxDataPoints: 43200
+                metricEditorMode: 0
+                metricName: Requests
+                metricQueryType: 0
+                mode: 0
+                namespace: AWS/CloudFront
+                options:
+                    showDisabledItems: false
+                period: 60s
+                queryLanguage: CWLI
+                queryMode: Metrics
+                range: true
+                refId: A
+                region: us-east-1
+                sqlExpression: ""
+                statistic: Sum
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: max
+                refId: B
+                type: reduce
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 100000
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            DashboardURL: https://grafana.shoong.store/d/raJpZGCMk/aws-cloudfront?orgId=1&from=now-7d&to=now&timezone=browser&var-datasource=eenxcshldhjwgd&var-distributionid=E3EDXD0GKN5M2H
+          isPaused: false
+          notification_settings:
+            receiver: slack alert
+        - uid: deo0p0vjgxqf4b
+          title: Cloud Front TotalErrorRate
+          condition: D
+          data:
+            - refId: B
+              relativeTimeRange:
+                from: 604800
+                to: 0
+              datasourceUid: eenxcshldhjwgd
+              model:
+                alias: ""
+                application:
+                    filter: ""
+                datasource:
+                    uid: eenxcshldhjwgd
+                dimensions:
+                    DistributionId:
+                        - E3EDXD0GKN5M2H
+                    Region:
+                        - Global
+                expression: ""
+                functions: []
+                group:
+                    filter: ""
+                host:
+                    filter: ""
+                id: ""
+                instant: false
+                intervalMs: 1000
+                item:
+                    filter: ""
+                label: ""
+                logGroups: []
+                matchExact: true
+                maxDataPoints: 43200
+                metricEditorMode: 0
+                metricName: TotalErrorRate
+                metricQueryType: 0
+                mode: 0
+                namespace: AWS/CloudFront
+                options:
+                    showDisabledItems: false
+                period: ""
+                queryLanguage: CWLI
+                queryMode: Metrics
+                range: true
+                refId: B
+                region: us-east-1
+                sqlExpression: ""
+                statistic: Average
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: C
+                type: reduce
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 5
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: C
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            DashboardURL: https://grafana.shoong.store/d/raJpZGCMk/aws-cloudfront?orgId=1&from=now-7d&to=now&timezone=browser&var-datasource=eenxcshldhjwgd&var-distributionid=E3EDXD0GKN5M2H
+          isPaused: false
+          notification_settings:
+            receiver: slack alert
+    - orgId: 1
+      name: 5m
+      folder: Alert_Spring
+      interval: 5m
+      rules:
+        - uid: ceo0191i76xvkd
+          title: Spring Heap Used
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: aenxcpauhem0wc
+              model:
+                adhocFilters: []
+                datasource:
+                    type: prometheus
+                    uid: aenxcpauhem0wc
+                disableTextWrap: false
+                editorMode: builder
+                expr: (sum(jvm_memory_used_bytes{service="web-backend", area="heap", namespace="backend"}) * 100) / sum(jvm_memory_max_bytes{service="web-backend", area="heap", namespace="backend"})
+                format: time_series
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                interval: ""
+                intervalFactor: 1
+                intervalMs: 30000
+                legendFormat: ""
+                maxDataPoints: 100
+                range: false
+                refId: A
+                step: 14400
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 60
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: KeepLast
+          execErrState: Error
+          keepFiringFor: 1m
+          annotations:
+            DashboardURL: https://grafana.shoong.store/d/spring_boot_21/spring-boot-3-x-statistics?orgId=1&from=now-1h&to=now&timezone=browser&var-application=&var-Namespace=backend&var-instance=10.0.128.199:8080&var-hikaricp=HikariPool-1&var-memory_pool_heap=$__all&var-memory_pool_nonheap=$__all
+          isPaused: false
+          notification_settings:
+            receiver: slack alert
+        - uid: eeo030di5ov0ga
+          title: Spring CPU Usage
+          condition: A
+          data:
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: aenxcpauhem0wc
+              model:
+                adhocFilters: []
+                datasource:
+                    type: prometheus
+                    uid: aenxcpauhem0wc
+                disableTextWrap: false
+                editorMode: builder
+                expr: process_cpu_usage{service="web-backend", namespace="backend"}
+                format: time_series
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                interval: ""
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Process CPU Usage
+                maxDataPoints: 43200
+                range: false
+                refId: B
+                useBackend: false
+            - refId: A
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0.6
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: A
+                type: threshold
+          noDataState: KeepLast
+          execErrState: Error
+          keepFiringFor: 1m
+          annotations:
+            DashboardURL: https://grafana.shoong.store/d/spring_boot_21/spring-boot-3-x-statistics?orgId=1&from=now-1h&to=now&timezone=browser&var-application=&var-Namespace=backend&var-instance=10.0.128.199:8080&var-hikaricp=HikariPool-1&var-memory_pool_heap=$__all&var-memory_pool_nonheap=$__all
+          isPaused: false
+          notification_settings:
+            receiver: slack alert
+        - uid: feo03n34k76dcd
+          title: Spring up
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: aenxcpauhem0wc
+              model:
+                disableTextWrap: false
+                editorMode: builder
+                expr: up{job="web-backend"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                        type: eq
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            DashboardURL: https://grafana.shoong.store/d/spring_boot_21/spring-boot-3-x-statistics?orgId=1&from=now-1h&to=now&timezone=browser&var-application=&var-Namespace=backend&var-instance=10.0.128.199:8080&var-hikaricp=HikariPool-1&var-memory_pool_heap=$__all&var-memory_pool_nonheap=$__all
+          isPaused: false
+          notification_settings:
+            receiver: slack alert
+    - orgId: 1
+      name: 5m
+      folder: Alert_ALB
+      interval: 5m
+      rules:
+        - uid: eeo0pob8bsqgwf
+          title: ALB UnHealthy targets
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 86400
+                to: 0
+              datasourceUid: eenxcshldhjwgd
+              model:
+                alias: ""
+                datasource:
+                    type: cloudwatch
+                    uid: eenxcshldhjwgd
+                dimensions:
+                    LoadBalancer:
+                        - app/k8s-argocd-argocdin-257323fb63/b319b7870ec822c9
+                    TargetGroup:
+                        - '*'
+                expression: ""
+                id: ""
+                instant: false
+                intervalMs: 1000
+                label: ""
+                logGroups: []
+                matchExact: true
+                maxDataPoints: 43200
+                metricEditorMode: 0
+                metricName: UnHealthyHostCount
+                metricQueryType: 0
+                namespace: AWS/ApplicationELB
+                period: ""
+                queryLanguage: CWLI
+                queryMode: Metrics
+                range: true
+                refId: A
+                region: default
+                sqlExpression: ""
+                statistic: Average
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            DashboardURL: https://grafana.shoong.store/d/vmIdaerGk/aws-alb-cloudwatch-metrics?orgId=1&from=now-24h&to=now&timezone=browser&var-datasource=eenxcshldhjwgd&var-region=default&var-loadbalancer=app%2Fk8s-argocd-argocdin-257323fb63%2Fb319b7870ec822c9
+          isPaused: false
+          notification_settings:
+            receiver: slack alert
+    - orgId: 1
+      name: 5m
+      folder: Alert_Maria
+      interval: 5m
+      rules:
+        - uid: deo04fhqoq5tsb
+          title: Maria DB slow queries
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: aenxcpauhem0wc
+              model:
+                disableTextWrap: false
+                editorMode: code
+                expr: rate(mysql_global_status_slow_queries[1m])
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 3
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            DashboardURL: https://grafana.shoong.store/d/549c2bf8936f7767ea6ac47c47b00f2a/mysql-exporter-quickstart-and-dashboard?orgId=1&from=now-1h&to=now&timezone=browser&var-datasource=aenxcpauhem0wc&var-job=$__all&var-instance=$__all&refresh=10s
+          isPaused: false
+          notification_settings:
+            receiver: slack alert
+        - uid: ceo04ngv027swb
+          title: Maria DB up
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: aenxcpauhem0wc
+              model:
+                disableTextWrap: false
+                editorMode: builder
+                expr: up{job="ec2-mariadb"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                        type: eq
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            DashboardURL: https://grafana.shoong.store/d/549c2bf8936f7767ea6ac47c47b00f2a/mysql-exporter-quickstart-and-dashboard?orgId=1&from=now-1h&to=now&timezone=browser&var-datasource=aenxcpauhem0wc&var-job=$__all&var-instance=$__all&refresh=10s
+          isPaused: false
+          notification_settings:
+            receiver: slack alert
+        - uid: deo04z6tmkkqof
+          title: Maria DB connection error
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: aenxcpauhem0wc
+              model:
+                disableTextWrap: false
+                editorMode: builder
+                expr: increase(mysql_global_status_connection_errors_total{job="ec2-mariadb"}[1m])
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 3
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            DashboardURL: https://grafana.shoong.store/d/549c2bf8936f7767ea6ac47c47b00f2a/mysql-exporter-quickstart-and-dashboard?orgId=1&from=now-1h&to=now&timezone=browser&var-datasource=aenxcpauhem0wc&var-job=$__all&var-instance=$__all&refresh=10s
+          isPaused: false
+          notification_settings:
+            receiver: slack alert

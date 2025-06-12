@@ -1,0 +1,71 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-ingress
+  namespace: monitoring
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/group.name: monitoring
+    alb.ingress.kubernetes.io/group.order: '1'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/type: ip # 필요에 따라 'ip'로 변경 고려 (EKS + CNI 권장)
+    alb.ingress.kubernetes.io/load-balancer-name: monitoring-load-balancer
+    alb.ingress.kubernetes.io/healthcheck-path: /prometheus/-/healthy # Check prometheus health status
+    
+    # --- HTTPS 설정을 위한 추가 어노테이션 ---
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]' # 80번과 443번 포트 모두 리스닝
+    alb.ingress.kubernetes.io/ssl-redirect: '443' # 80번 HTTP 요청을 443번 HTTPS로 리다이렉트
+    alb.ingress.kubernetes.io/backend-protocol: HTTP # ALB와 Prometheus 서비스 간 통신은 HTTP
+    # 여기에 여러분의 실제 AWS ACM 인증서 ARN을 정확히 입력하세요!
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:256881178873:certificate/6b9748a9-a9e8-4a5b-9912-d66db2fcf27f
+    # --- 여기까지 HTTPS 설정 ---
+
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /prometheus
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-kube-prometheus-prometheus   # 실제 서비스 이름 확인 후 변경
+                port:
+                  number: 9090
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/group.name: monitoring
+    alb.ingress.kubernetes.io/group.order: '2'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/type: ip # 필요에 따라 'ip'로 변경 고려 (EKS + CNI 권장)
+    alb.ingress.kubernetes.io/load-balancer-name: monitoring-load-balancer
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health # Check grafana health status
+
+    # --- HTTPS 설정을 위한 추가 어노테이션 ---
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]' # 80번과 443번 포트 모두 리스닝
+    alb.ingress.kubernetes.io/ssl-redirect: '443' # 80번 HTTP 요청을 443번 HTTPS로 리다이렉트
+    alb.ingress.kubernetes.io/backend-protocol: HTTP # ALB와 Grafana 서비스 간 통신은 HTTP
+    # 여기에 여러분의 실제 AWS ACM 인증서 ARN을 정확히 입력하세요!
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:256881178873:certificate/6b9748a9-a9e8-4a5b-9912-d66db2fcf27f
+    # --- 여기까지 HTTPS 설정 ---
+
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-grafana # 실제 서비스 이름 확인 후 변경
+                port:
+                  number: 80

@@ -1,0 +1,12 @@
+apiVersion: 1
+contactPoints:
+    - orgId: 1
+      name: slack alert
+      receivers:
+        - uid: aenxebfgdmku8b
+          type: slack
+          settings:
+            text: '{{ template "default.message" . }}'
+            title: '{{ template "ds_title" . }}'
+            url: https://hooks.slack.com/services/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
+          disableResolveMessage: false
