@@ -1,0 +1,11 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc-delayed
+provisioner: ebs.csi.aws.com
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  type: gp3
+  # iops: "1000" # io1, io2 유형인 경우 IOPS 설정 (선택 사항)
+  # fsType: ext4 # 원하는 파일 시스템 유형 (선택 사항, 기본값은 프로비저너 기본값)

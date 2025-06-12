@@ -1,0 +1,40 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: shoong-eks-cluster1
+  region: ap-northeast-2
+  version: "1.32"
+
+vpc:
+  id: vpc-0286daa8fb92a80a6            # 기존 VPC ID로 대체
+  subnets:
+    private:
+      ap-northeast-2a:
+        id: subnet-0226025bd3f129685             # 기존 Private Subnet ID (AZ a)
+      ap-northeast-2b:
+        id: subnet-0a57dc9edae32efb9             # 기존 Private Subnet ID (AZ b)
+      ap-northeast-2c:
+        id: subnet-060eed8feb4554d92             # 기존 Private Subnet ID (AZ c)
+
+nodeGroups:
+  - name: shoong-arm-ng
+    instanceType: c6g.large
+    desiredCapacity: 3
+    minSize: 3
+    maxSize: 6
+    volumeSize: 20
+    ssh:
+      allow: true
+      publicKeyName: shoong-key             # SSH Key Pair 이름
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+        ebs: true
+        cloudWatch: true
+    amiFamily: AmazonLinux2023
+    labels:
+      arch: arm64
+    tags:
+      nodegroup: arm
+    privateNetworking: true

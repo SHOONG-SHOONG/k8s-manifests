@@ -1,0 +1,80 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: shoong-eks-cluster1
+  region: ap-northeast-2
+
+vpc:
+  id: vpc-0286daa8fb92a80a6            # 기존 VPC ID로 대체
+  subnets:
+    private:
+      ap-northeast-2a:
+        id: subnet-0226025bd3f129685             # 기존 Private Subnet ID (AZ a)
+      ap-northeast-2b:
+        id: subnet-0a57dc9edae32efb9             # 기존 Private Subnet ID (AZ b)
+      ap-northeast-2c:
+        id: subnet-060eed8feb4554d92             # 기존 Private Subnet ID (AZ c)
+
+nodeGroups:
+  - name: was-ng
+    instanceType: m5.large
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 6
+    volumeSize: 30
+    amiFamily: AmazonLinux2023
+    labels:
+      workload: was
+    tags:
+      nodegroup-role: was
+    ssh:
+      allow: true
+      publicKeyName: shoong-key
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+    privateNetworking: true
+
+  - name: kafka-ng
+    instanceType: m5.large
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 3
+    volumeSize: 30
+    volumeType: gp3
+    amiFamily: AmazonLinux2023
+    labels:
+      workload: kafka
+    tags:
+      nodegroup-role: kafka
+    ssh:
+      allow: true
+      publicKeyName: shoong-key
+    iam:
+      withAddonPolicies:
+        autoScaler: false
+        ebs: true
+        cloudWatch: true
+    privateNetworking: true
+
+  - name: streaming-infra-ng
+    instanceType: m5.large
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 2
+    volumeSize: 30
+    amiFamily: AmazonLinux2023
+    labels:
+      workload: streaming-infra
+    tags:
+      nodegroup-role: streaming-infra
+    ssh:
+      allow: true
+      publicKeyName: shoong-key
+    iam:
+      withAddonPolicies:
+        autoScaler: false
+        ebs: true
+        cloudWatch: true
+    privateNetworking: true
